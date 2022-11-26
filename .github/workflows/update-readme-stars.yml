@@ -1,7 +1,7 @@
-name: Update README star table⭐
+name: Update README star table⭐     # Thanks to k2bd for this workflow and action
 on:
   # schedule:
-  #   - cron: "51 */4 * * *"  # Every 4 hours
+  #   - cron: "51 */4 * * *"          # Every 4 hours
   
   workflow_dispatch:
 
