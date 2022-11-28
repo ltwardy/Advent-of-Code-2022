@@ -1,4 +1,4 @@
-""" Advent of Code 2022: wrapper for running scripts """
+""" Advent of Code 2022: wrapper for running my daily solution scripts."""
 
 from modules.shared_functions import *
 import importlib
