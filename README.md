@@ -4,7 +4,7 @@
 ![](https://img.shields.io/badge/stars%20⭐-0-yellow)	
 ![](https://img.shields.io/badge/days%20completed-0-red)	
 
-My solutions to Advent of Code's 2022 puzzles.
+My solutions for Advent of Code 2022.
 
 <!--- advent_readme_stars table --->
 ## 2022 Results
