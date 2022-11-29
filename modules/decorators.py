@@ -1,4 +1,4 @@
-# decorater functions for Advent of Code 2021
+# decorator functions for Advent of Code 2021
 
 def print_debugger(func):
     def new_function(*args, **kwargs):
