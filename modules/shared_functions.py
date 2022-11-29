@@ -7,7 +7,8 @@
 #     dataset = None
 #     readfile = None
 #     while not dataset:
-#         dataset = input("Choose your dataset: 0 = testing, 1 = the real thing, Q to choose another day. (Default is 0.) ")
+#         dataset = input("Choose your dataset: 0 = testing, 1 = the real thing, Q to choose another day.
+#         (Default is 0.) ")
 #         if dataset.upper() == "Q":
 #             return
 #         elif dataset == "1":
