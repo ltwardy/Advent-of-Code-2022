@@ -13,3 +13,8 @@ My solutions for Advent of Code 2022.
 | :---: | :---: | :---: |
 | [Day 1](https://adventofcode.com/2022/day/1) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
+
+## Some things I'm learning along the way...
+
+### Day 1
+Solving the puzzles was easy, but using Github is still clumsy and non-intuitive.  Keep practicing.
