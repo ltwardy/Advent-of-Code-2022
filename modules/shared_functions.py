@@ -1,4 +1,4 @@
-# Shared functions for AOC 2021
+# Shared functions for AOC 2022
 
 # from decorators import print_debugger
 
@@ -19,7 +19,7 @@
 
 def puzzle_data(aoc_day):
     """Return the (string) name of the puzzle data file appropriate to today's Advent of Code puzzle."""
-    readfile = "data/day" + str(aoc_day) + "_input.txt"
+    readfile = "data/day" + str(aoc_day) + "_2022_input.txt"
     return readfile
 
 
@@ -28,7 +28,8 @@ def script_name(aoc_day):
     day = str(aoc_day)
     if aoc_day < 10:
         day = "0" + day
-    script = "day_" + day + "_revised"
+    script = "day_" + day + "_2022"
+    print(script)   # debug
     return script
 
 

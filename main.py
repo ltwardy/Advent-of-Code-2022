@@ -1,7 +1,9 @@
 """ Advent of Code 2022: wrapper for running my daily solution scripts."""
+# 1 December 2022: This doesn't work yet
+
+import importlib
 
 from modules.shared_functions import *
-import importlib
 
 
 def run_aoc_scripts():
@@ -9,8 +11,7 @@ def run_aoc_scripts():
     aoc_day = None
     while not aoc_day:
         try:
-            aoc_day = input("Which day's challenge would you like to run? \
-            (Type Q to quit.) ")
+            aoc_day = input("Which day's challenge would you like to run? (Type Q to quit.) ")
             if aoc_day.upper() == "Q":
                 break
             aoc_day = int(aoc_day)
@@ -20,10 +21,10 @@ def run_aoc_scripts():
             else:
                 print(f"Executing the day {aoc_day} script...")  # debug
                 try:
-                    solver = importlib.import_module(script_name(aoc_day))
+                    solver = importlib.import_module(script_name(aoc_day))  # TODO: Fix broken path to today's script
                     solver.solution(puzzle_data(aoc_day))
-                except ModuleNotFoundError:
-                    print(f"That puzzle hasn't been solved yet.")
+                except ModuleNotFoundError as err:
+                    print(f"That puzzle hasn't been solved yet: {err}.")
                 aoc_day = None
 
         except ValueError:
