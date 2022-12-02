@@ -14,7 +14,10 @@ My solutions for Advent of Code 2022.
 | [Day 1](https://adventofcode.com/2022/day/1) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
 
-## Some things I'm learning along the way...
+## Some notes along the way...
 
 ### Day 1
-Solving the puzzles was easy, but using Github is still clumsy and non-intuitive.  Keep practicing.
+Solving the puzzles was easy, but using GitHub is still clumsy and non-intuitive.  Keep practicing.
+
+### Day 2
+My solution is broken into lots of little functions; this makes it easy for me to keep track of what I'm doing while I'm writing, but I'm not sure whether it helps the reader.  It will be interesting to see how my style changes over the month, as puzzles get more difficult.
