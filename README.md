@@ -7,7 +7,6 @@
 My solutions for Advent of Code 2022, as I write them.
 
 <!--- advent_readme_stars table --->
-## 2022 Results
 
 | Day | Part 1 | Part 2 |
 | :---: | :---: | :---: |
