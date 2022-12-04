@@ -6,7 +6,7 @@
 
 def data_filename(aoc_day):
     """Return the (string) name of the puzzle data file appropriate to today's Advent of Code puzzle."""
-    readfile = "data/day" + str(aoc_day) + "_2022_input.txt"
+    readfile = aoc_filename(aoc_day) + "_input.txt"
     return readfile
 
 # def data_filename(aoc_day):  # ToDo: fix this so it works from the wrapper script
