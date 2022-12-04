@@ -1,7 +1,9 @@
 # Advent of Code 2022
 # Day 02: Rock Paper Scissors
 
+import sys
 
+sys.path.append("../")
 from ..shared_functions import fetch_data
 
 

@@ -2,6 +2,9 @@
 # Day 04: Camp Cleanup
 
 
+import sys
+
+sys.path.append("../")
 from shared_functions import fetch_data
 
 
