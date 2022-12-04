@@ -32,3 +32,8 @@ month, as puzzles get more difficult.
 
 This looks like a great chance to practice using list comprehensions. As I get more familiar with writing these clever
 and compact code structures, I hope they'll be easier to read.
+
+### Day 4
+
+This puzzle felt surprisingly easy; I hope that I'm as pleased when I look back at this code later as I am today.  My solution would probably be too memory-intensive for large data sets (looking at you, day 22 of 2021) but for the actual puzzle data today it was just fine.
+
