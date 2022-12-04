@@ -2,6 +2,7 @@
 # Day 01: Calorie Counting
 
 import sys
+
 sys.path.append("../")
 from shared_functions import fetch_data
 

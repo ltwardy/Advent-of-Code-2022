@@ -1,7 +1,9 @@
 # Advent of Code 2022
 # Day XX: Puzzle name
 
+import sys
 
+sys.path.append("../")
 from shared_functions import fetch_data
 
 
