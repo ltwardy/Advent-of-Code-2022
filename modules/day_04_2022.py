@@ -5,7 +5,7 @@
 from shared_functions import fetch_data
 
 
-def parse_input(raw_data) -> list[list[list, list]]:
+def parse_input(raw_data) -> list[list[set]]:
     """Reformat the puzzle input into something nicer to wrk with."""
     chore_assignments = []
     for elf_pair in raw_data:
