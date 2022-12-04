@@ -39,7 +39,7 @@ def fetch_data(filename):
     with open(filename, "r") as file:
         for line in file:
             line = line.strip()
-            line = str(line)
+            line = str(line)  # next year I may skip this step?
             rawdata.append(line)
     return rawdata
 
