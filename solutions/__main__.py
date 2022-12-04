@@ -4,7 +4,7 @@
 import importlib
 import os
 
-from solutions.shared_functions import *
+from shared_functions import *
 
 
 def run_aoc_scripts():
@@ -22,17 +22,9 @@ def run_aoc_scripts():
             else:
                 print(f"Executing the day {aoc_day} script...")  # debug
                 try:
-                    print(__file__)
-                    working_dir = os.getcwd()
-                    print(working_dir)
-                    print(os.listdir(working_dir))
-                    todays_script = script_name(aoc_day)
-                    print(todays_script)
-                    todays_script = todays_script + ".py"
-                    assert todays_script in os.listdir("../modules")  #
-
-                    solver = importlib.import_module(script_name(aoc_day))  # TODO: Fix broken path to today's script
-                    solver.solution(puzzle_data(aoc_day))
+                    todays_path = aoc_filename(aoc_day) + "." + aoc_scriptname(aoc_day)
+                    solver = importlib.import_module(todays_path)  # TODO: Fix broken path to today's script
+                    solver.solution(data_filename(aoc_day))
                 except ModuleNotFoundError as err:
                     print(f"That puzzle hasn't been solved yet: {err}.")
                 aoc_day = None

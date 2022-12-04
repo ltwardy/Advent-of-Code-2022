@@ -1,36 +1,34 @@
 # Shared functions for AOC 2022
 
 # from decorators import print_debugger
+# import os
+# from pathlib import Path
 
-# def choose_dataset(aoc_day):
-#     """Return the (string) name of the data file appropriate to today's Advent of Code puzzle."""
-#     dataset = None
-#     readfile = None
-#     while not dataset:
-#         dataset = input("Choose your dataset: 0 = testing, 1 = the real thing, Q to choose another day.
-#         (Default is 0.) ")
-#         if dataset.upper() == "Q":
-#             return
-#         elif dataset == "1":
-#             readfile = "day" + str(aoc_day) + "_input.txt"
-#         else:
-#             readfile = "day" + str(aoc_day) + "_testing.txt"
-#     return readfile
-
-def puzzle_data(aoc_day):
+def data_filename(aoc_day):
     """Return the (string) name of the puzzle data file appropriate to today's Advent of Code puzzle."""
     readfile = "data/day" + str(aoc_day) + "_2022_input.txt"
     return readfile
 
+# def data_filename(aoc_day):  # ToDo: fix this so it works from the wrapper script
+#     """Return a path object pointing to the data file appropriate to today's Advent of Code puzzle."""
+#      working_directory =
+#      readfile = Path.joinpath(working_directory), aoc_filename(aoc_day), aoc_filename(aoc_day) + "_input.txt")
+#      return readfile
 
-def script_name(aoc_day):
+
+def aoc_scriptname(aoc_day):
     """Return the (string) name of the python script solving this day's puzzle."""
+    script = aoc_filename(aoc_day) + "_2022"
+    return script
+
+
+def aoc_filename(aoc_day) -> str:
+    """Generate the correctly-formatted name of my AoC files appropriate to a given day."""
     day = str(aoc_day)
     if aoc_day < 10:
         day = "0" + day
-    script = "day_" + day + "_2022"
-    print(script)   # debug
-    return script
+    filename = "day_" + day
+    return filename
 
 
 def fetch_data(filename):
