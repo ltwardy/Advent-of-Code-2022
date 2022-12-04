@@ -5,15 +5,16 @@
 from shared_functions import fetch_data
 
 
-def parse_input(raw_data) -> list[list[list, list]]:
+def parse_input(raw_data) -> list[list[set]]:
     """Reformat the puzzle input into something nicer to wrk with."""
     chore_assignments = []
     for elf_pair in raw_data:
-        elves = []
+        pair = []
         for elf in elf_pair.split(","):
             chores = [int(endpoint) for endpoint in elf.split("-")]
-            elves.append(chores)
-        chore_assignments.append(elves)
+            chores = set(range(chores[0], chores[1] + 1))
+            pair.append(chores)
+        chore_assignments.append(pair)
     print(chore_assignments)
     return chore_assignments
 
@@ -22,8 +23,7 @@ def solve_part_1(chore_assignments) -> int:
     """Find the elves whose chores are a subset of their partner's."""
     complete_overlaps = 0
     for pair in chore_assignments:
-        elf1 = set(range(pair[0][0], pair[0][1] + 1))
-        elf2 = set(range(pair[1][0], pair[1][1] + 1))
+        elf1, elf2 = pair
         if elf1.issubset(elf2) or elf2.issubset(elf1):
             complete_overlaps += 1
     return complete_overlaps
@@ -35,8 +35,7 @@ def solve_part_2(chore_assignments):
     """Find the chore assignment pairs containing any duplicate work."""
     partial_overlaps = 0
     for pair in chore_assignments:
-        elf1 = set(range(pair[0][0], pair[0][1] + 1))
-        elf2 = set(range(pair[1][0], pair[1][1] + 1))
+        elf1, elf2 = pair
         if elf1.intersection(elf2):
             partial_overlaps += 1
     return partial_overlaps

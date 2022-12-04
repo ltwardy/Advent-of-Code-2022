@@ -29,7 +29,7 @@ def run_aoc_scripts():
                     todays_script = script_name(aoc_day)
                     print(todays_script)
                     todays_script = todays_script + ".py"
-                    assert todays_script in os.listdir("modules")  #
+                    assert todays_script in os.listdir("../modules")  #
 
                     solver = importlib.import_module(script_name(aoc_day))  # TODO: Fix broken path to today's script
                     solver.solution(puzzle_data(aoc_day))
