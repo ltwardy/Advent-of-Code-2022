@@ -5,6 +5,11 @@
 from shared_functions import fetch_data
 
 
+def parse(raw_data):
+    """Make our input more useful for problem-solving."""
+    pass
+
+
 def solve_part_1(input_data):
     """Describe the puzzle."""
     pass
@@ -18,7 +23,8 @@ def solve_part_2(input_data):
 def solution(filename):
     """Briefly describe the puzzle here."""
     # process data from filename to make it usable by our solving functions
-    processed_data = fetch_data(filename)
+    raw_data = fetch_data(filename)
+    processed_data = parse(raw_data)
 
     solve_part_1(processed_data)
     solve_part_2(processed_data)
