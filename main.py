@@ -4,7 +4,7 @@
 import importlib
 import os
 
-from modules.shared_functions import *
+from solutions.shared_functions import *
 
 
 def run_aoc_scripts():

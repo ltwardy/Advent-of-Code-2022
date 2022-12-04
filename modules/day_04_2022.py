@@ -2,7 +2,7 @@
 # Day 04: Camp Cleanup
 
 
-from shared_functions import fetch_data
+from solutions.shared_functions import fetch_data
 
 
 def parse_input(raw_data) -> list[list[list, list]]:

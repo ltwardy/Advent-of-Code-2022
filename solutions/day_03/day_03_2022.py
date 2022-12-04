@@ -1,7 +1,8 @@
 # Advent of Code 2022
 # Day 03: Rucksack Reorganization
 
-from shared_functions import fetch_data
+
+from ..shared_functions import fetch_data
 
 
 def parse_data(input_data) -> list[tuple]:

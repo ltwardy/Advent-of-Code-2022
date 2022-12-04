@@ -2,7 +2,7 @@
 # Day 02: Rock Paper Scissors
 
 
-from shared_functions import fetch_data
+from ..shared_functions import fetch_data
 
 
 def parse_input(raw_input: list) -> list[tuple]:
