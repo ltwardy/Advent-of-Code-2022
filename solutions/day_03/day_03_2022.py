@@ -4,7 +4,7 @@
 import sys
 
 sys.path.append("../")
-from shared_functions import fetch_data
+from shared_functions import fetch_string_data
 
 
 def parse_data(input_data) -> list[tuple]:
@@ -56,7 +56,7 @@ def solve_part_2(elves):
 def solution(filename):
     """Help the elves with their mispacked supplies and badges."""
     # process data from filename to make it usable by our solving functions
-    elves = fetch_data(filename)
+    elves = fetch_string_data(filename)
     rucksacks = parse_data(elves)
 
     score1 = solve_part_1(rucksacks)

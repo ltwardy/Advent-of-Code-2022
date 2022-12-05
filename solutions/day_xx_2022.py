@@ -4,7 +4,7 @@
 import sys
 
 sys.path.append("../")
-from shared_functions import fetch_data
+from shared_functions import fetch_string_data
 
 
 def parse(raw_data):
@@ -25,7 +25,7 @@ def solve_part_2(input_data):
 def solution(filename):
     """Briefly describe the puzzle here."""
     # process data from filename to make it usable by our solving functions
-    raw_data = fetch_data(filename)
+    raw_data = fetch_string_data(filename)
     processed_data = parse(raw_data)
 
     solve_part_1(processed_data)

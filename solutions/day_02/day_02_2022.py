@@ -4,7 +4,7 @@
 import sys
 
 sys.path.append("../")
-from ..shared_functions import fetch_data
+from ..shared_functions import fetch_string_data
 
 
 def parse_input(raw_input: list) -> list[tuple]:
@@ -87,7 +87,7 @@ def solve_part_2(strategy_guide) -> int:
 def solution(filename):
     """Play 'rock, paper, scissors' with the elves."""
     # process data from filename to make it usable by our solving functions
-    raw_data = fetch_data(filename)
+    raw_data = fetch_string_data(filename)
     strategy_guide = parse_input(raw_data)
 
     score1 = solve_part_1(strategy_guide)

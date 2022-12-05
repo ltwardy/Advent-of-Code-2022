@@ -5,7 +5,7 @@
 import sys
 
 sys.path.append("../")
-from shared_functions import fetch_data
+from shared_functions import fetch_string_data
 
 
 def parse_input(raw_data) -> list[list[set]]:
@@ -50,7 +50,7 @@ def solve_part_2(chore_assignments):
 def solution(filename):
     """Help the elves reduce duplication of cleanup efforts."""
     # process data from filename to make it usable by our solving functions
-    raw_data = fetch_data(filename)
+    raw_data = fetch_string_data(filename)
     chore_assignments = parse_input(raw_data)
 
     duplicates = solve_part_1(chore_assignments)

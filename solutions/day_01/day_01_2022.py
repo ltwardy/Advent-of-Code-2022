@@ -4,7 +4,7 @@
 import sys
 
 sys.path.append("../")
-from shared_functions import fetch_data
+from shared_functions import fetch_string_data
 
 
 def find_calories_per_elf(input_data: list) -> list[int]:
@@ -46,7 +46,7 @@ def solve_part_2(calories_per_elf) -> int:
 def solution(filename):
     """Briefly describe the puzzle here."""
     # process data from filename to make it usable by our solving functions
-    processed_data = fetch_data(filename)
+    processed_data = fetch_string_data(filename)
     calories_per_elf = find_calories_per_elf(processed_data)
 
     print("We need to find out how much food the elves have with them.")
