@@ -38,3 +38,7 @@ and compact code structures, I hope they'll be easier to read.
 
 This puzzle felt surprisingly easy; I hope that I'm as pleased when I look back at this code later as I am today.  My solution would probably be too memory-intensive for large data sets (looking at you, day 22 of 2021) but for the actual puzzle data today it was just fine.
 
+### Day 5
+
+I feel so rusty. Lots of my solving time today was actually looking up things like 'rstrip' and shortcutting with
+boolean operators. 

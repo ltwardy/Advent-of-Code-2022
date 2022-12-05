@@ -31,13 +31,24 @@ def aoc_filename(aoc_day) -> str:
     return filename
 
 
-def fetch_data(filename):
+def fetch_string_data(filename):
     """Reads a text file and returns its contents as a list of strings (one string per row in the original file)."""
     rawdata = []
     with open(filename, "r") as file:
         for line in file:
             line = line.strip()
-            line = str(line)  # next year I may skip this step?
+            line = str(line)
+            rawdata.append(line)
+    return rawdata
+
+
+def fetch_raw_data(filename):
+    """Reads a text file and returns its contents as a list of strings (one string per row in the original file)."""
+    rawdata = []
+    with open(filename, "r") as file:
+        for line in file:
+            line = line.rstrip()
+            line = str(line)
             rawdata.append(line)
     return rawdata
 
