@@ -1,8 +1,8 @@
 # Advent of Code 2022
 
-![](https://img.shields.io/badge/day%20📅-4-blue)	
-![](https://img.shields.io/badge/stars%20⭐-8-yellow)	
-![](https://img.shields.io/badge/days%20completed-4-red)	
+![](https://img.shields.io/badge/day%20📅-5-blue)	
+![](https://img.shields.io/badge/stars%20⭐-10-yellow)	
+![](https://img.shields.io/badge/days%20completed-5-red)	
 
 My solutions for Advent of Code 2022, as I write them.
 
@@ -15,6 +15,7 @@ My solutions for Advent of Code 2022, as I write them.
 | [Day 2](https://adventofcode.com/2022/day/2) | ⭐ | ⭐ |
 | [Day 3](https://adventofcode.com/2022/day/3) | ⭐ | ⭐ |
 | [Day 4](https://adventofcode.com/2022/day/4) | ⭐ | ⭐ |
+| [Day 5](https://adventofcode.com/2022/day/5) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
 
 ## Some notes along the way...
