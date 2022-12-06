@@ -49,4 +49,10 @@ paths instead? That turns out not to be a trivial problem. I need to learn about
 
 I feel so rusty. Lots of my solving time today was actually looking up things like 'rstrip' and shortcutting with
 boolean operators. Once I got the input file parsed, the rest of the puzzle wasn't bad.
- 
+
+### Day 6
+
+The solution to this puzzle was pretty straightforward, but it took me an hour of careless mistakes and chasing ideas
+for "improvements" that didn't actually work to write six lines of successful code. That's a demonstration, if I needed
+one, of the cognitive effects of inadequate sleep. If I want to be able to code in the morning, I need to go to bed on
+time. 
