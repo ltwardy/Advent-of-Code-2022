@@ -11,7 +11,6 @@ def solve_part_1(datastream) -> int:
     """Find the first block of 4 non-repeating characters in an input stream."""
     print(datastream)
     for i in range(3, len(datastream)):
-        # print(i, datastream[i], datastream[i - 3: i + 1], i + 3, datastream.count(datastream[i], i - 3, i + 1) > 1)
         if len(set(datastream[i - 3: i + 1])) == 4:
             return i + 1
     # Success, but after way more failed attempts than I expected.
@@ -20,7 +19,6 @@ def solve_part_1(datastream) -> int:
 def solve_part_2(datastream):
     """Find the first block of 14 non-repeating characters in an input stream."""
     for i in range(13, len(datastream)):
-        # print(i, datastream[i], datastream[i - 3: i + 1], i + 3, datastream.count(datastream[i], i - 3, i + 1) > 1)
         if len(set(datastream[i - 13: i + 1])) == 14:
             return i + 1
     # Success! Just solve the problem that was asked; I don't need to write the general case.
