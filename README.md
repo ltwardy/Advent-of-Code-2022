@@ -55,4 +55,28 @@ boolean operators. Once I got the input file parsed, the rest of the puzzle wasn
 The solution to this puzzle was pretty straightforward, but it took me an hour of careless mistakes and chasing ideas
 for "improvements" that didn't actually work to write six lines of successful code. That's a demonstration, if I needed
 one, of the cognitive effects of inadequate sleep. If I want to be able to code in the morning, I need to go to bed on
-time. 
+time.
+
+### Day 7
+
+Traversing trees is interesting but still non-intuitive for me. Can I write a recursive solution? I'll come back to this
+when I have more contiguous time to work on it.
+
+### Day 8
+
+Today looks like a good time to remind myself about numpy.
+Starting with the very basics: if grid is a 2D numpy array,
+
+* grid[0] is the first row.
+* grid[0: 2] is the 3rd column, because we count from zero.
+* grid[0,2] is the element found in the first row, third column position.
+* grid.shape is a tuple (number of rows, number of columns).
+
+I found it helpful to read that in numpy, the last coordinate is the one that changes fastest. If I'm watching the
+indices change as I traverse an array, the last digit changes first: that's which column we're in. Then, when we run out
+of columns, we go to a new row, and that coordinate comes first. It's like place value, only instead of ones >> tens >>
+hundreds >> thousands, it's columns >> rows >> planes >> spaces >> multiverses. I hope thinking of lower-dimension
+arrays spatially like this will make higher-dimensional arrays easier to work with.
+
+All in all, today's puzzle was less painful than I expected. Also, I like these elves' ideas about tree houses. I'd love
+to visit their house that can see a *lot* of trees <3
