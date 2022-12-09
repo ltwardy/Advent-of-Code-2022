@@ -5,6 +5,8 @@ import sys
 
 sys.path.append("../")
 from shared_functions import fetch_string_data
+from shared_functions import array_print
+from collections import namedtuple
 
 
 class Directory():
@@ -20,53 +22,70 @@ def parse(raw_data: list[str]) -> list[list]:
 
 def create_filesystem(input: list) -> dict:
     """Read straight through our puzzle input, converting it to a dictionary of sets."""
-    filesystem = dict()
-    cwd = None
+    # if I didn't need them to be mutable I'd do this:
+    # Directory = namedtuple("Directory", "contents size", defaults=[None])
+    # File = namedtuple("File", "size")
+
+    flat_fs = dict()
+
     # first, create our dictionary of directories
     for line in input:
         if line[0] == "$" and line[1] == "cd":
-            cwd = line[2]
-            if "." not in cwd and cwd not in filesystem:
-                filesystem[cwd] = {}
+            dir_name = line[2]
+            if dir_name not in flat_fs.keys():
+                flat_fs[dir_name] = {"size": 0, "contents": []}
+        if line[1] == "dir" and line[0] not in flat_fs.keys():
+            flat_fs[line[0]] = {"size": None, "contents": []}
 
     # now crawl through again and populate the directories
-    cwd = []
-    sizes = dict()
+    cwd = "/"
     for line in input:
-        for line in input:
-            if line[0] == "$" and line[1] == "cd":  # change directories
-                while line[2]:
-                    if "." in line[2]:
-                        print(line[2], "pop! ", end="")
-                        line[2] = line[2][1:]
-                        print("from ", cwd)
-                        cwd.pop()
-                        continue
-                    cwd.append(line[2])
-                    line[2] = None
-            elif line[0] == "$" and line[1] == "ls":  # populate current directory and track sizes
-                continue
-            else:  # it's either a file or a directory
-                print("we're in ", cwd)
-                print("add ", filesystem[cwd[-1]])
-                # filesystem[cwd[-1]] = filesystem[cwd[-1]] + [line[1]]
-                sizes[line[1]] = line[0]
+        if line[0] == "$" and line[1] == "cd":  # change directories
+            cwd = line[2]
+        elif line[0].isnumeric():
+            flat_fs[cwd]["contents"].append(line[1])
+            flat_fs[cwd]["size"] += int(line[0])
+            flat_fs[line[1]] = {"size": int(line[0])}
 
+        # while line[2]:
+        #     if ".." in line[2]:
+        #         print(line[2], "pop! ", end="")
+        #         line[2] = line[2][1:]
+        #         print("from ", cwd)
+        #         cwd.pop()
+        #         continue
+        #     cwd.append(line[2])
+        #     line[2] = None
+    # elif line[0] == "$" and line[1] == "ls":  # populate current directory and track sizes
+    #     continue
+    # else:  # it's either a file or a directory
+    #     print("we're in ", cwd)
+    #     print("add ", filesystem[cwd[-1]])
+    #     # filesystem[cwd[-1]] = filesystem[cwd[-1]] + [line[1]]
+    #     sizes[line[1]] = line[0]
+    #
+    # print(flat_fs)
+    return flat_fs
+
+
+def find_small_files_usage(filesystem, cutoff=100000):
+    """Return the total space in a dictionary of files and folders occupied by items under a cutoff size. """
+    usage = 0
+    print(type(filesystem))
     print(filesystem)
-    print()
-    print(sizes)
-
-    return sizes
+    for item in filesystem:
+        print(item)
+        size = filesystem[item]["size"]
+        if size <= cutoff:
+            usage += size
+    return usage
 
 
 def solve_part_1(input, cutoff=100000):
     """Find the directories whose sizes are under a threshold and report the sum of their sizes."""
-    _filesystem, sizes = create_filesystem(input)
-    total = 0
-    for directory in sizes.keys():
-        if sizes[directory] > 100000:
-            total += sizes[directory]
-        return total
+    filesystem = create_filesystem(input)
+    usage = find_small_files_usage(filesystem, cutoff)
+    return usage
 
 
 def solve_part_2(input_data):
