@@ -30,42 +30,40 @@ def create_filesystem(input: list) -> dict:
 
     # first, create our dictionary of directories
     for line in input:
-        if line[0] == "$" and line[1] == "cd":
+        if line[0] == "$" and line[1] == "cd" and line[2] != "..":
             dir_name = line[2]
             if dir_name not in flat_fs.keys():
-                flat_fs[dir_name] = {"size": 0, "contents": []}
-        if line[1] == "dir" and line[0] not in flat_fs.keys():
+                flat_fs[dir_name] = {"size": 0, "contents": [], "type": "directory"}
+        elif line[1] == "dir" and line[0] not in flat_fs.keys():
             flat_fs[line[0]] = {"size": None, "contents": []}
 
     # now crawl through again and populate the directories
     cwd = "/"
     for line in input:
-        if line[0] == "$" and line[1] == "cd":  # change directories
-            cwd = line[2]
+        if line[0] == "$":
+            if line[1] == "cd":  # change directories
+                cwd = line[2]
         elif line[0].isnumeric():
             flat_fs[cwd]["contents"].append(line[1])
             flat_fs[cwd]["size"] += int(line[0])
-            flat_fs[line[1]] = {"size": int(line[0])}
+            flat_fs[line[1]] = {"size": int(line[0]), "type": "file"}
+        else:  # what's left are directory names
+            print(line[1])
+            print("Hm. How'd I miss that?")
+            assert line[0] == "dir"
+            if line[1] not in flat_fs.keys():
+                flat_fs[line[1]] = {"size": 0, "contents": [], "type": "directory"}
 
-        # while line[2]:
-        #     if ".." in line[2]:
-        #         print(line[2], "pop! ", end="")
-        #         line[2] = line[2][1:]
-        #         print("from ", cwd)
-        #         cwd.pop()
-        #         continue
-        #     cwd.append(line[2])
-        #     line[2] = None
-    # elif line[0] == "$" and line[1] == "ls":  # populate current directory and track sizes
-    #     continue
-    # else:  # it's either a file or a directory
-    #     print("we're in ", cwd)
-    #     print("add ", filesystem[cwd[-1]])
-    #     # filesystem[cwd[-1]] = filesystem[cwd[-1]] + [line[1]]
-    #     sizes[line[1]] = line[0]
-    #
     # print(flat_fs)
     return flat_fs
+
+
+def calculate_sizes(filesystem):
+    """Crawl through filesystem and calculate directory sizes."""
+    for item in filesystem:
+        if item["type"] == "directory":
+            for filedir in item["contents"]:
+                item["size"] += filesystem[filedir]["size"]
 
 
 def find_small_files_usage(filesystem, cutoff=100000):
@@ -106,15 +104,15 @@ def solution(filename):
 
 
 # This can be run as a script from the command line, with data filename as argument.
-# if __name__ == "__main__":
-#     import sys
-#
-#     try:
-#         arg = sys.argv[1]
-#     except IndexError:
-#         raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
-#
-#     print(f"Data file = '{arg}'.")  # debug
-#     solution(arg)
+if __name__ == "__main__":
+    import sys
 
-solution("testing.txt")
+    try:
+        arg = sys.argv[1]
+    except IndexError:
+        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+
+    print(f"Data file = '{arg}'.")  # debug
+    solution(arg)
+
+# solution("testing.txt")
