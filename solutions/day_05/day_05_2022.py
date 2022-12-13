@@ -6,7 +6,7 @@ import sys
 
 sys.path.append("../")
 
-from shared_functions import fetch_raw_data
+from shared_functions import fetch_rstrip_data
 
 
 def parse(raw_data):
@@ -75,7 +75,7 @@ def solve_part_2(stacks_of_crates, instructions):
 def solution(filename):
     """Simulate the rearrangement of stacks of crates."""
     # process data from filename to make it usable by our solving functions
-    raw_data = fetch_raw_data(filename)
+    raw_data = fetch_rstrip_data(filename)
     starting_state, instructions = parse(raw_data)
 
     top_crates = solve_part_1(starting_state, instructions)
