@@ -42,13 +42,23 @@ def fetch_string_data(filename):
     return rawdata
 
 
-def fetch_raw_data(filename):
+def fetch_rstrip_data(filename):
     """Reads a text file and returns its contents as a list of strings (one string per row in the original file)."""
     rawdata = []
     with open(filename, "r") as file:
         for line in file:
             line = line.rstrip()
             line = str(line)
+            rawdata.append(line)
+    return rawdata
+
+
+def fetch_raw_data(filename):
+    """Reads a text file and returns its contents as a list of strings (one string per row in the original file)."""
+    rawdata = []
+    with open(filename, "r") as file:
+        for line in file:
+            line = line.rstrip()
             rawdata.append(line)
     return rawdata
 
