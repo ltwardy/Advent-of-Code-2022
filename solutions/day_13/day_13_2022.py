@@ -1,13 +1,11 @@
 # Advent of Code 2022
-# Day XX: Puzzle name
+# Day 13: Distress Signal
 
 import sys
 
 sys.path.append("../")
-from shared_functions import fetch_raw_data
-from shared_functions import array_print
+from shared_functions import *
 from ast import literal_eval
-import math
 
 
 def parse(raw_data):
@@ -100,7 +98,8 @@ def solve_part_1(signal):
     correct_indices = []
     print(signal)
     for index, pair in enumerate(signal):
-        print(pair)
+        # pause()
+        print("Next pair: ", pair)
         # order = compare_lists(pair[0], pair[1])
         order = compare_values(pair[0], pair[1])
         if order == "correct" or order == "equal":
@@ -108,12 +107,13 @@ def solve_part_1(signal):
             correct_indices.append(index + 1)
         else:
             print("Wrong order, sorry.")
-        print()
+            print()
     score = sum(correct_indices)
     return score
     # 52-something-something was too high
     # 4017 is too low
     # but the test case works, so this is going to require more work.  sigh.
+
 
 def solve_part_2(input_data):
     """Describe the next puzzle."""
@@ -135,15 +135,15 @@ def solution(filename):
 
 # This can be run as a script from the command line, with data filename as argument.
 
-if __name__ == "__main__":
-    import sys
+# if __name__ == "__main__":
+#     import sys
+#
+#     try:
+#         arg = sys.argv[1]
+#     except IndexError:
+#         raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+#
+#     print(f"Data file = '{arg}'.")  # debug
+#     solution(arg)
 
-    try:
-        arg = sys.argv[1]
-    except IndexError:
-        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
-
-    print(f"Data file = '{arg}'.")  # debug
-    solution(arg)
-
-# solution("testing.txt")   # debug
+solution("input.txt")  # debug

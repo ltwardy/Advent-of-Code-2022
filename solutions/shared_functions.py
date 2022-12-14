@@ -67,3 +67,8 @@ def array_print(array_name):
     """Prints a list with one element per line rather than comma-separated"""
     for line in array_name:
         print(line)
+
+
+def pause():
+    input("Press return to continue... ")
+    return
