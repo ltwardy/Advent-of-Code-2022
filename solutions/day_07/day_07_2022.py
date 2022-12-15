@@ -1,17 +1,53 @@
 # Advent of Code 2022
 # Day 07: No Space Left On Device
 
+from pprint import pprint
 import sys
 
 sys.path.append("../")
 from shared_functions import fetch_string_data
-from shared_functions import array_print
-from collections import namedtuple
 
 
-class Directory():
+def calculate_size(files):
+    return sum([f.size for f in files])
+
+
+class Directory:
     """I think I need a custom class to handle this data."""
-    print("How do I do this again?")
+
+    def __init__(self, name: str, contents=None):
+        self.name = name
+        if contents is None:
+            contents = []
+        self.contents = contents
+        # self.parent = "/".join(directory_stack)
+        self.parent = cwd
+
+    @property
+    def size(self):
+        if self.contents:
+            return sum([f.size for f in self.contents])
+        else:
+            return 0
+
+    def __repr__(self):
+        return f"Directory ({self.parent}.{self.name}: {self.contents}, {self.size}"
+
+    def append_file(self, other):
+        self.contents = self.contents.append(other)
+
+
+class File:
+    """I wish I had just done this from the beginning."""
+
+    def __init__(self, name: str, size: int):
+        self.name = name
+        self.size = size
+        # self.parent = "/".join(directory_stack)
+        self.parent = cwd
+
+    def __repr__(self):
+        return f"File {self.parent}.{self.name}: size {self.size}"
 
 
 def parse(raw_data: list[str]) -> list[list]:
@@ -20,100 +56,100 @@ def parse(raw_data: list[str]) -> list[list]:
     return terminal_commands
 
 
-def create_filesystem(input: list) -> dict:
+def create_filesystem(puzzle_input: list) -> dict:
     """Read straight through our puzzle input, converting it to a dictionary of sets."""
-    # let's try namedtuples.
-    # tuples aren't mutable, but there's a ._replace() method to deal with that
 
-    Directory = namedtuple("Directory", "name contents size", defaults=[[], None])
-    File = namedtuple("File", "name size")
-
-    # first, create our filesystem as a list of directories containing other directories and files
-    root = Directory("/")
-    namespace = {"/": root}
-    filesystem = [root]
+    # first, create our filesystem as a dictionary of files and directories
+    global filesystem
+    global directory_stack
+    global cwd
     directory_stack = []
-    for line in input:
+    filesystem = {"/": Directory("/")}
+    cwd = None
+    for lnum, line in enumerate(puzzle_input):
+        print(f"line {lnum}:")
         if line[0] == "$":
             if line[1] == "cd":
-                if line[2] == "..":
+                dirname = line[2]
+                if dirname == "..":
                     directory_stack.pop(-1)
                     cwd = directory_stack[-1]
+                    print(f"back up a level")
                 else:
-                    directory_stack.append(line[2])
-                    cwd = directory_stack[-1]
-            else:  # command is ls
-                pass
+                    try:
+                        assert isinstance(filesystem[dirname], Directory)
+                        print(f"change to directory {dirname}")
+                        directory_stack.append(line[2])
+                        cwd = directory_stack[-1]
+                    except AssertionError:
+                        print(f"{dirname} is not a Directory")
+            else:  # command is ls, and no action is needed this line
+                print(f"next lines list the contents of directory {cwd}")
         elif line[0] == "dir":
             dirname = line[1]
-            namespace[dirname] = Directory(dirname, [], None)
-            filesystem.append(dirname)
-            namespace[cwd].contents.append(dirname)
+            if dirname not in filesystem.keys():
+                newdir = Directory(dirname)
+                print(f"create directory {dirname}")
+                filesystem[dirname] = newdir
+                print(f"add directory {dirname} to the filesystem")
+                filesystem[cwd].contents.append(newdir)
+                print(f"add directory {dirname} to {filesystem[cwd].name}")
         elif line[0].isnumeric():
             filename = line[1]
             filesize = int(line[0])
-            # cwd = directory_stack[-1]
-            namespace[filename] = File(filename, filesize)
-            namespace[cwd].contents.append(filename)
+            if filename not in filesystem.keys():
+                newfile = File(filename, filesize)
+                # filesystem[filename] = newfile
+                print(f"create file {filename}")
+                try:
+                    parent = filesystem[cwd]
+                    parent.contents.append(newfile)
+                    print(f"add file {filename} to directory {parent}")
+                except AttributeError as a:
+                    print("--------------------------------------------------------------")
+                    print("Error ad")
+                    print(f"line {lnum}: {directory_stack} : {filesystem[cwd]} : {line}")
+                    print(a)
+                    print("--------------------------------------------------------------")
+                    break
         else:
             raise ValueError(f"Unexpected input:{line}")
-        print(f"namespace = {namespace}")
-        print(f"filesystem = {filesystem}")
+
         print(f"directory_stack = {directory_stack}")
+        pprint(filesystem)
         print()
 
-    #         if dir_name not in flat_fs.keys():
-    #             flat_fs[dir_name] = {"size": 0, "contents": [], "type": "directory"}
-    #     elif line[1] == "dir" and line[0] not in flat_fs.keys():
-    #         flat_fs[line[0]] = {"size": None, "contents": []}
-    #
-    # # now crawl through again and populate the directories
-    # cwd = "/"
-    # for line in input:
-    #     if line[0] == "$":
-    #         if line[1] == "cd":  # change directories
-    #             cwd = line[2]
-    #     elif line[0].isnumeric():
-    #         flat_fs[cwd]["contents"].append(line[1])
-    #         flat_fs[cwd]["size"] += int(line[0])
-    #         flat_fs[line[1]] = {"size": int(line[0]), "type": "file"}
-    #     else:  # what's left are directory names
-    #         print(line[1])
-    #         print("Hm. How'd I miss that?")
-    #         assert line[0] == "dir"
-    #         if line[1] not in flat_fs.keys():
-    #             flat_fs[line[1]] = {"size": 0, "contents": [], "type": "directory"}
-
-    # print(flat_fs)
     return filesystem
 
 
-def calculate_sizes(filesystem):
-    """Crawl through filesystem and calculate directory sizes."""
-    for item in filesystem:
-        if item["type"] == "directory":
-            for filedir in item["contents"]:
-                item["size"] += filesystem[filedir]["size"]
+# def find_small_files_usage(filesystem, cutoff):
+#     """Return the total space in a dictionary of files and directories by any items under a cutoff size. """
+#     usage = 0
+#     for filefolder in filesystem.values():
+#         fsize = filefolder.size
+#         if fsize <= cutoff:
+#             usage += fsize
+#     return usage
 
 
-def find_small_files_usage(filesystem, cutoff=100000):
-    """Return the total space in a dictionary of files and folders occupied by items under a cutoff size. """
+def find_small_dirs_usage(filesystem, cutoff):
+    """Return the total space in a dictionary of files and directories used by directories under a cutoff size. """
     usage = 0
-    print(type(filesystem))
-    print(filesystem)
-    for item in filesystem:
-        print(item)
-        size = filesystem[item]["size"]
-        if size <= cutoff:
-            usage += size
+    for filefolder in filesystem.values():
+        if isinstance(filefolder, Directory):
+            fsize = filefolder.size
+            if fsize <= cutoff:
+                usage += fsize
     return usage
 
 
-def solve_part_1(input, cutoff=100000):
+def solve_part_1(puzzle_input, cutoff=100000):
     """Find the directories whose sizes are under a threshold and report the sum of their sizes."""
-    filesystem = create_filesystem(input)
-    # usage = find_small_files_usage(filesystem, cutoff)
-    # return usage
+    filesystem = create_filesystem(puzzle_input)
+    usage = find_small_dirs_usage(filesystem, cutoff)
+    return usage
+    # problem 1: this solves the test case correctly but recurses too deeply for the input file (?!)
+    # problem 2: solved the recursion problem but my answer 1057205 is too low
 
 
 def solve_part_2(input_data):
@@ -134,15 +170,15 @@ def solution(filename):
 
 
 # This can be run as a script from the command line, with data filename as argument.
-if __name__ == "__main__":
-    import sys
+# if __name__ == "__main__":
+#     import sys
+#
+#     try:
+#         arg = sys.argv[1]
+#     except IndexError:
+#         raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+#
+#     print(f"Data file = '{arg}'.")  # debug
+#     solution(arg)
 
-    try:
-        arg = sys.argv[1]
-    except IndexError:
-        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
-
-    print(f"Data file = '{arg}'.")  # debug
-    solution(arg)
-
-# solution("testing.txt")
+solution("testing.txt")
