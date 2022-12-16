@@ -1,27 +1,30 @@
 # Advent of Code 2022
 # Day 07: No Space Left On Device
 
-from pprint import pprint
 import sys
+from pprint import pprint
+from copy import deepcopy
 
 sys.path.append("../")
 from shared_functions import fetch_string_data
 
 
-def calculate_size(files):
-    return sum([f.size for f in files])
+# def calculate_size(files):
+#     return sum([f.size for f in files])
 
 
+# I think I need a custom class to handle this data.
 class Directory:
-    """I think I need a custom class to handle this data."""
+    """Requires two arguments, name (a string) and path-to-directory (a tuple).
+    Contents can be specified at creation or can be added by a class method.
+    Size is caclulated internally based on the current contents."""
 
-    def __init__(self, name: str, contents=None):
+    def __init__(self, name: str, path: tuple, contents=None):
         self.name = name
         if contents is None:
             contents = []
         self.contents = contents
-        # self.parent = "/".join(directory_stack)
-        self.parent = cwd
+        self.path = path
 
     @property
     def size(self):
@@ -31,105 +34,91 @@ class Directory:
             return 0
 
     def __repr__(self):
-        return f"Directory ({self.parent}.{self.name}: {self.contents}, {self.size}"
+        return f"Directory ({self.path}: {self.name}: {self.contents}, {self.size}"
 
     def append_file(self, other):
         self.contents = self.contents.append(other)
 
 
+# I wish I had just done this from the beginning.
 class File:
-    """I wish I had just done this from the beginning."""
+    """Requires three parameters, name (string), path (tuple), and size (integer)."""
 
-    def __init__(self, name: str, size: int):
+    def __init__(self, name: str, path: tuple, size: int):
         self.name = name
         self.size = size
-        # self.parent = "/".join(directory_stack)
-        self.parent = cwd
+        self.path = path
 
     def __repr__(self):
-        return f"File {self.parent}.{self.name}: size {self.size}"
+        return f"File {self.path}: {self.name}: size {self.size}"
 
 
 def parse(raw_data: list[str]) -> list[list]:
     """Make our input more useful for problem-solving."""
-    terminal_commands = [line.split() for line in raw_data]
-    return terminal_commands
+    terminal_output = [line.split() for line in raw_data]
+    return terminal_output
 
 
 def create_filesystem(puzzle_input: list) -> dict:
-    """Read straight through our puzzle input, converting it to a dictionary of sets."""
-
-    # first, create our filesystem as a dictionary of files and directories
+    """Read straight through our puzzle input, converting it to a dictionary of file and directory objects."""
     global filesystem
     global directory_stack
-    global cwd
-    directory_stack = []
-    filesystem = {"/": Directory("/")}
-    cwd = None
+    directory_stack = ["root"]
+    filesystem = {("root", "/"): Directory("/", ("root",))}
+
     for lnum, line in enumerate(puzzle_input):
         print(f"line {lnum}:")
-        if line[0] == "$":
+
+        if line[0] == "dir":
+            dirname = line[1]
+            full_path = [dir for dir in directory_stack] + [dirname]
+            full_path = tuple(full_path)
+            parent_path = tuple(directory_stack)
+            if full_path not in filesystem.keys():
+                newdir = Directory(dirname, tuple(directory_stack))
+                print(f"created directory {dirname} at location {full_path}")
+                filesystem[full_path] = newdir
+                print(f"added directory {full_path} to the filesystem")
+                filesystem[parent_path].contents.append(newdir)
+                print(f"added directory {full_path} to {filesystem[parent_path]}")
+
+        elif line[0].isnumeric():
+            filename = line[1]
+            full_path = [dir for dir in directory_stack] + [filename]
+            full_path = tuple(full_path)
+            parent_path = tuple(directory_stack)
+            filesize = int(line[0])
+            if full_path not in filesystem.keys():
+                newfile = File(filename, parent_path, filesize)
+                print(f"created file {filename} at location {full_path}")
+                filesystem[full_path] = newfile
+                print(f"added file {full_path} to the filesystem")
+                filesystem[parent_path].contents.append(newfile)
+                print(f"added file{full_path} to {filesystem[parent_path]}")
+
+        elif line[0] == "$":
             if line[1] == "cd":
                 dirname = line[2]
                 if dirname == "..":
                     directory_stack.pop(-1)
-                    cwd = directory_stack[-1]
+                    if not directory_stack:
+                        raise RuntimeError("Illegal directory change: can't pop past the base of the directory tree.")
                     print(f"back up a level")
                 else:
                     try:
-                        assert isinstance(filesystem[dirname], Directory)
-                        print(f"change to directory {dirname}")
-                        directory_stack.append(line[2])
-                        cwd = directory_stack[-1]
+                        assert isinstance(filesystem[tuple(directory_stack + [dirname])], Directory)
                     except AssertionError:
-                        print(f"{dirname} is not a Directory")
+                        print(f"{dirname} is not a Directory in the path {directory_stack}.")
+                    directory_stack.append(dirname)
+                    print(f"change to directory {tuple(directory_stack)}")
+
             else:  # command is ls, and no action is needed this line
-                print(f"next lines list the contents of directory {cwd}")
-        elif line[0] == "dir":
-            dirname = line[1]
-            if dirname not in filesystem.keys():
-                newdir = Directory(dirname)
-                print(f"create directory {dirname}")
-                filesystem[dirname] = newdir
-                print(f"add directory {dirname} to the filesystem")
-                filesystem[cwd].contents.append(newdir)
-                print(f"add directory {dirname} to {filesystem[cwd].name}")
-        elif line[0].isnumeric():
-            filename = line[1]
-            filesize = int(line[0])
-            if filename not in filesystem.keys():
-                newfile = File(filename, filesize)
-                # filesystem[filename] = newfile
-                print(f"create file {filename}")
-                try:
-                    parent = filesystem[cwd]
-                    parent.contents.append(newfile)
-                    print(f"add file {filename} to directory {parent}")
-                except AttributeError as a:
-                    print("--------------------------------------------------------------")
-                    print("Error ad")
-                    print(f"line {lnum}: {directory_stack} : {filesystem[cwd]} : {line}")
-                    print(a)
-                    print("--------------------------------------------------------------")
-                    break
+                print(f"next lines list the contents of directory {tuple(directory_stack)}")
+
         else:
             raise ValueError(f"Unexpected input:{line}")
 
-        print(f"directory_stack = {directory_stack}")
-        pprint(filesystem)
-        print()
-
     return filesystem
-
-
-# def find_small_files_usage(filesystem, cutoff):
-#     """Return the total space in a dictionary of files and directories by any items under a cutoff size. """
-#     usage = 0
-#     for filefolder in filesystem.values():
-#         fsize = filefolder.size
-#         if fsize <= cutoff:
-#             usage += fsize
-#     return usage
 
 
 def find_small_dirs_usage(filesystem, cutoff):
@@ -148,12 +137,10 @@ def solve_part_1(puzzle_input, cutoff=100000):
     filesystem = create_filesystem(puzzle_input)
     usage = find_small_dirs_usage(filesystem, cutoff)
     return usage
-    # problem 1: this solves the test case correctly but recurses too deeply for the input file (?!)
-    # problem 2: solved the recursion problem but my answer 1057205 is too low
-
+    # 16 Dec 22: hallelujah! 1428881 is the correct answer!
 
 def solve_part_2(input_data):
-    """Describe the next puzzle."""
+    """Find the smallest directory with size greater than 30,000,000."""
     pass
 
 
@@ -170,15 +157,15 @@ def solution(filename):
 
 
 # This can be run as a script from the command line, with data filename as argument.
-# if __name__ == "__main__":
-#     import sys
-#
-#     try:
-#         arg = sys.argv[1]
-#     except IndexError:
-#         raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
-#
-#     print(f"Data file = '{arg}'.")  # debug
-#     solution(arg)
+if __name__ == "__main__":
+    import sys
 
-solution("testing.txt")
+    try:
+        arg = sys.argv[1]
+    except IndexError:
+        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+
+    print(f"Data file = '{arg}'.")  # debug
+    solution(arg)
+
+solution("input.txt")
