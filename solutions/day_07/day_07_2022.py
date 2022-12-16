@@ -71,7 +71,7 @@ def create_filesystem(puzzle_input: list) -> dict:
 
         if line[0] == "dir":
             dirname = line[1]
-            full_path = [dir for dir in directory_stack] + [dirname]
+            full_path = [d for d in directory_stack] + [dirname]
             full_path = tuple(full_path)
             parent_path = tuple(directory_stack)
             if full_path not in filesystem.keys():
@@ -84,7 +84,7 @@ def create_filesystem(puzzle_input: list) -> dict:
 
         elif line[0].isnumeric():
             filename = line[1]
-            full_path = [dir for dir in directory_stack] + [filename]
+            full_path = [d for d in directory_stack] + [filename]
             full_path = tuple(full_path)
             parent_path = tuple(directory_stack)
             filesize = int(line[0])
@@ -136,13 +136,25 @@ def solve_part_1(puzzle_input, cutoff=100000):
     """Find the directories whose sizes are under a threshold and report the sum of their sizes."""
     filesystem = create_filesystem(puzzle_input)
     usage = find_small_dirs_usage(filesystem, cutoff)
-    return usage
+    return usage, filesystem
     # 16 Dec 22: hallelujah! 1428881 is the correct answer!
 
-def solve_part_2(input_data):
-    """Find the smallest directory with size greater than 30,000,000."""
-    pass
 
+def solve_part_2(filesystem):
+    """Find the smallest directory with that frees up enough space on the device."""
+
+    dir_sizes = []
+    for item in filesystem.values():
+        if isinstance(item, Directory):
+            dir_sizes.append(item.size)
+    root = max(dir_sizes)  # it had better be the largest!
+    unused = 70000000 - root
+    more_space_needed = 30000000 - unused
+    large_enough = [d for d in dir_sizes if d >= more_space_needed]
+    just_large_enough = min(large_enough)
+    assert just_large_enough + unused >= 30000000
+    return just_large_enough
+    # happy dance! that works!
 
 def solution(filename):
     """Briefly describe the puzzle here."""
@@ -150,22 +162,24 @@ def solution(filename):
     raw_data = fetch_string_data(filename)
     terminal_output = parse(raw_data)
 
-    small_files = solve_part_1(terminal_output)
-    print(f"The files and directories under 100k each occupy a total of {small_files}.")
+    small_dirs, filesystem = solve_part_1(terminal_output)
+    print(f"The directories under 100k each occupy a total of {small_dirs}.")
 
-    solve_part_2(terminal_output)
+    pprint(filesystem)
+    smallest_big_dir = solve_part_2(filesystem)
+    print(f"The smallest directory of sufficient size takes up {smallest_big_dir} disk space.")
 
 
 # This can be run as a script from the command line, with data filename as argument.
-if __name__ == "__main__":
-    import sys
-
-    try:
-        arg = sys.argv[1]
-    except IndexError:
-        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
-
-    print(f"Data file = '{arg}'.")  # debug
-    solution(arg)
+# if __name__ == "__main__":
+#     import sys
+#
+#     try:
+#         arg = sys.argv[1]
+#     except IndexError:
+#         raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+#
+#     print(f"Data file = '{arg}'.")  # debug
+#     solution(arg)
 
 solution("input.txt")
