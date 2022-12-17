@@ -81,7 +81,7 @@ when I have more contiguous time to work on it.
 ### Day 8
 
 Today looks like a good time to remind myself about numpy.
-Starting with the very basics: if grid is a 2D numpy array,
+Starting with the very basics: a grid is a 2D numpy array,
 
 * grid[0] is the first row.
 * grid[0: 2] is the 3rd column, because we count from zero.
