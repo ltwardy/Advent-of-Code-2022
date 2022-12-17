@@ -3,6 +3,7 @@
 # from decorators import print_debugger
 # import os
 # from pathlib import Path
+from math import sqrt
 
 def data_filename(aoc_day):
     """Return the (string) name of the puzzle data file appropriate to today's Advent of Code puzzle."""
@@ -72,3 +73,7 @@ def array_print(array_name):
 def pause():
     input("Press return to continue... ")
     return
+
+
+def distance(x1, y1, x2, y2):
+    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
