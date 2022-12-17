@@ -74,6 +74,8 @@ when I have more contiguous time to work on it.
   well use them later in the month.
 * I also learned about the `dataclass` decorator, from my spouse who is also doing AoC. I don't know enough to use them,
   but I now know they're out there.
+* As it turns out, there were no recursive functions required; my custom classes took care of the nested tre structure
+  automatically.
 
 ### Day 8
 
@@ -93,3 +95,7 @@ arrays spatially like this will make higher-dimensional arrays easier to work wi
 
 All in all, today's puzzle was less painful than I expected. Also, I like these elves' ideas about tree houses. I'd love
 to visit their house that can see a *lot* of trees <3
+
+### Day 9
+
+To be continued...
