@@ -3,21 +3,16 @@
 
 import sys
 from pprint import pprint
-from copy import deepcopy
 
 sys.path.append("../")
 from shared_functions import fetch_string_data
-
-
-# def calculate_size(files):
-#     return sum([f.size for f in files])
 
 
 # I think I need a custom class to handle this data.
 class Directory:
     """Requires two arguments, name (a string) and path-to-directory (a tuple).
     Contents can be specified at creation or can be added by a class method.
-    Size is caclulated internally based on the current contents."""
+    Size is calculated internally based on the current contents."""
 
     def __init__(self, name: str, path: tuple, contents=None):
         self.name = name
@@ -156,6 +151,7 @@ def solve_part_2(filesystem):
     return just_large_enough
     # happy dance! that works!
 
+
 def solution(filename):
     """Briefly describe the puzzle here."""
     # process data from filename to make it usable by our solving functions
@@ -171,15 +167,13 @@ def solution(filename):
 
 
 # This can be run as a script from the command line, with data filename as argument.
-# if __name__ == "__main__":
-#     import sys
-#
-#     try:
-#         arg = sys.argv[1]
-#     except IndexError:
-#         raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
-#
-#     print(f"Data file = '{arg}'.")  # debug
-#     solution(arg)
+if __name__ == "__main__":
+    import sys
 
-solution("input.txt")
+    try:
+        arg = sys.argv[1]
+    except IndexError:
+        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+
+    print(f"Data file = '{arg}'.")  # debug
+    solution(arg)

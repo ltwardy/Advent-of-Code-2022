@@ -64,6 +64,16 @@ time.
 Traversing trees is interesting but still non-intuitive for me. Can I write a recursive solution? I'll come back to this
 when I have more contiguous time to work on it.
 
+16 Dec 2022: Finally, a solution! Things I learned over the last week of work include:
+
+* My first thought was that I'd need to write some custom classes to handle the directory and file data, but then
+  decided that would be unnecessary and too much work. I was wrong. I would have saved myself a lot of frustration if I
+  had just written the classes at the start.
+* Among the things I tried without success were `namedtuples`. I'm glad for the reminder that these exist, and I may
+  well use them later in the month.
+* I also learned about the `dataclass` decorator, from my spouse who is also doing AoC. I don't know enough to use them,
+  but I now know they're out there.
+
 ### Day 8
 
 Today looks like a good time to remind myself about numpy.
