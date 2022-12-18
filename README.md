@@ -99,4 +99,4 @@ to visit their house that can see a *lot* of trees <3
 
 ### Day 9
 
-To be continued...
+I'm so glad there was a second half of this puzzle.  The first half asked us to simulate the movement of two-segment ropes (head + tail), and I solved that pretty easily.  But the second half involves longer ropes, and my solution didn't work.  It turns out that my mental model for how the tail moved was wrong -- close enough that it didn't cause errors in the simpler first case, but not correct enough to solve a general case.  Also, I used a dataclass in part of my solution, yay! 
