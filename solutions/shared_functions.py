@@ -44,7 +44,8 @@ def fetch_string_data(filename):
 
 
 def fetch_rstrip_data(filename):
-    """Reads a text file and returns its contents as a list of strings (one string per row in the original file)."""
+    """Reads a text file and returns its contents as a list of strings (one string per row in the original file),
+    retaining spaces."""
     rawdata = []
     with open(filename, "r") as file:
         for line in file:
