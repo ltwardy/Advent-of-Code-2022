@@ -108,4 +108,4 @@ yay!
 ### Day 10
 
 "Noop" probably means something practical, like "no operation". But I hear it as a cute little sound, to rhyme with "
-boop". I kind of want a new pet now, so i can name then Noop.
+boop". I kind of want a new pet now, so I can name them "Noop". I had some difficulty at first understanding the puzzle, but once I figured that out the solution went quite smoothly.  
