@@ -1,10 +1,13 @@
 """ Advent of Code 2022: wrapper for running my daily solution scripts."""
 # 1 December 2022: This doesn't work yet
 
-import importlib
-import os
+from pydoc import importfile
 
-from shared_functions import *
+# from pathlib import Path
+from pyprojroot import here
+
+
+# import sys
 
 
 def run_aoc_scripts():
@@ -22,9 +25,19 @@ def run_aoc_scripts():
             else:
                 print(f"Executing the day {aoc_day} script...")  # debug
                 try:
-                    todays_path = aoc_filename(aoc_day) + "." + aoc_scriptname(aoc_day)
-                    solver = importlib.import_module(todays_path)  # TODO: Fix broken path to today's script
-                    solver.solution(data_filename(aoc_day))
+                    if aoc_day < 10:
+                        aoc_day = "0" + str(aoc_day)
+                    else:
+                        aoc_day = str(aoc_day)
+
+                    solver_path = here() / "solutions" / f"day_{aoc_day}" / f"day_{aoc_day}_2022.py"
+                    solver_path = str(solver_path.resolve())
+
+                    data_path = here() / "solutions" / f"day_{aoc_day}" / "input.txt"
+                    data_path = str(data_path.resolve())
+
+                    solver = importfile(solver_path)
+                    solver.solution(data_path)
                 except ModuleNotFoundError as err:
                     print(f"That puzzle hasn't been solved yet: {err}.")
                 aoc_day = None

@@ -1,11 +1,9 @@
 # Advent of Code 2022
 # Day 10: Cathode-Ray Tube
 
-import sys
-
-sys.path.append("../")
-from shared_functions import fetch_string_data
 from copy import deepcopy
+
+from shared_functions import fetch_string_data
 
 
 def parse(raw_data):
@@ -74,7 +72,7 @@ def solve_part_2(instructions: list) -> None:
             on_deck = instructions.pop(0)
         else:
             _noop = instructions.pop(0)
-    # Bwaahaha! It works! I can read the simulated output: REHPRLUB"
+    # Bwaahaha! It works! I can read the simulated output: REHPRLUB
     #  and that's the correct answer: another gold star!
 
 

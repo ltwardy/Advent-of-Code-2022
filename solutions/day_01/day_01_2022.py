@@ -1,9 +1,7 @@
 # Advent of Code 2022
 # Day 01: Calorie Counting
 
-import sys
 
-sys.path.append("../")
 from shared_functions import fetch_string_data
 
 

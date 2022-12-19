@@ -1,9 +1,7 @@
 # Advent of Code 2022
 # Day 03: Rucksack Reorganization
 
-import sys
 
-sys.path.append("../")
 from shared_functions import fetch_string_data
 
 

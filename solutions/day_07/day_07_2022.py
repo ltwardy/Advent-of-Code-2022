@@ -1,10 +1,7 @@
 # Advent of Code 2022
 # Day 07: No Space Left On Device
 
-import sys
-from pprint import pprint
 
-sys.path.append("../")
 from shared_functions import fetch_string_data
 
 
@@ -62,7 +59,7 @@ def create_filesystem(puzzle_input: list) -> dict:
     filesystem = {("root", "/"): Directory("/", ("root",))}
 
     for lnum, line in enumerate(puzzle_input):
-        print(f"line {lnum}:")
+        # print(f"line {lnum}:")
 
         if line[0] == "dir":
             dirname = line[1]
@@ -71,11 +68,11 @@ def create_filesystem(puzzle_input: list) -> dict:
             parent_path = tuple(directory_stack)
             if full_path not in filesystem.keys():
                 newdir = Directory(dirname, tuple(directory_stack))
-                print(f"created directory {dirname} at location {full_path}")
+                # print(f"created directory {dirname} at location {full_path}")
                 filesystem[full_path] = newdir
-                print(f"added directory {full_path} to the filesystem")
+                # print(f"added directory {full_path} to the filesystem")
                 filesystem[parent_path].contents.append(newdir)
-                print(f"added directory {full_path} to {filesystem[parent_path]}")
+                # print(f"added directory {full_path} to {filesystem[parent_path]}")
 
         elif line[0].isnumeric():
             filename = line[1]
@@ -85,11 +82,11 @@ def create_filesystem(puzzle_input: list) -> dict:
             filesize = int(line[0])
             if full_path not in filesystem.keys():
                 newfile = File(filename, parent_path, filesize)
-                print(f"created file {filename} at location {full_path}")
+                # print(f"created file {filename} at location {full_path}")
                 filesystem[full_path] = newfile
-                print(f"added file {full_path} to the filesystem")
+                # print(f"added file {full_path} to the filesystem")
                 filesystem[parent_path].contents.append(newfile)
-                print(f"added file{full_path} to {filesystem[parent_path]}")
+                # print(f"added file{full_path} to {filesystem[parent_path]}")
 
         elif line[0] == "$":
             if line[1] == "cd":
@@ -98,17 +95,18 @@ def create_filesystem(puzzle_input: list) -> dict:
                     directory_stack.pop(-1)
                     if not directory_stack:
                         raise RuntimeError("Illegal directory change: can't pop past the base of the directory tree.")
-                    print(f"back up a level")
+                    # print(f"back up a level")
                 else:
                     try:
                         assert isinstance(filesystem[tuple(directory_stack + [dirname])], Directory)
                     except AssertionError:
                         print(f"{dirname} is not a Directory in the path {directory_stack}.")
                     directory_stack.append(dirname)
-                    print(f"change to directory {tuple(directory_stack)}")
+                    # print(f"change to directory {tuple(directory_stack)}")
 
             else:  # command is ls, and no action is needed this line
-                print(f"next lines list the contents of directory {tuple(directory_stack)}")
+                pass
+                # print(f"next lines list the contents of directory {tuple(directory_stack)}")
 
         else:
             raise ValueError(f"Unexpected input:{line}")
@@ -161,7 +159,6 @@ def solution(filename):
     small_dirs, filesystem = solve_part_1(terminal_output)
     print(f"The directories under 100k each occupy a total of {small_dirs}.")
 
-    pprint(filesystem)
     smallest_big_dir = solve_part_2(filesystem)
     print(f"The smallest directory of sufficient size takes up {smallest_big_dir} disk space.")
 

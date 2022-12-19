@@ -9,7 +9,6 @@ from shared_functions import fetch_string_data
 
 def solve_part_1(datastream) -> int:
     """Find the first block of 4 non-repeating characters in an input stream."""
-    print(datastream)
     for i in range(3, len(datastream)):
         if len(set(datastream[i - 3: i + 1])) == 4:
             return i + 1

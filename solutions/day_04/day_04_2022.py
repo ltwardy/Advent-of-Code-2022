@@ -2,9 +2,6 @@
 # Day 04: Camp Cleanup
 
 
-import sys
-
-sys.path.append("../")
 from shared_functions import fetch_string_data
 
 
@@ -18,7 +15,6 @@ def parse_input(raw_data) -> list[list[set]]:
             chores = set(range(chores[0], chores[1] + 1))
             pair.append(chores)
         chore_assignments.append(pair)
-    print(chore_assignments)
     return chore_assignments
 
 

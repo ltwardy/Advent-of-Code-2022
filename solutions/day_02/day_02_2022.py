@@ -1,10 +1,8 @@
 # Advent of Code 2022
 # Day 02: Rock Paper Scissors
 
-import sys
 
-sys.path.append("../")
-from ..shared_functions import fetch_string_data
+from shared_functions import fetch_string_data
 
 
 def parse_input(raw_input: list) -> list[tuple]:

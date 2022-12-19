@@ -12,7 +12,6 @@ def parse(raw_data):
     """Convert our input to a numpy array."""
     grid = [[int(char) for char in line] for line in raw_data]
     grid = np.array(grid)
-    print(grid)
     return grid
 
 
