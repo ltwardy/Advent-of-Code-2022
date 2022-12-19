@@ -1,8 +1,8 @@
 # Advent of Code 2022
 
-![](https://img.shields.io/badge/day%20📅-17-blue)	
-![](https://img.shields.io/badge/stars%20⭐-18-yellow)	
-![](https://img.shields.io/badge/days%20completed-9-red)	
+![](https://img.shields.io/badge/day%20📅-19-blue)	
+![](https://img.shields.io/badge/stars%20⭐-20-yellow)	
+![](https://img.shields.io/badge/days%20completed-10-red)	
 
 My solutions for Advent of Code 2022, as I write them.
 
