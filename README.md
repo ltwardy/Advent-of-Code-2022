@@ -1,8 +1,8 @@
 # Advent of Code 2022
 
-![](https://img.shields.io/badge/day%20📅-17-blue)	
-![](https://img.shields.io/badge/stars%20⭐-18-yellow)	
-![](https://img.shields.io/badge/days%20completed-9-red)	
+![](https://img.shields.io/badge/day%20📅-19-blue)	
+![](https://img.shields.io/badge/stars%20⭐-20-yellow)	
+![](https://img.shields.io/badge/days%20completed-10-red)	
 
 My solutions for Advent of Code 2022, as I write them.
 
@@ -20,6 +20,7 @@ My solutions for Advent of Code 2022, as I write them.
 | [Day 7](https://adventofcode.com/2022/day/7) | ⭐ | ⭐ |
 | [Day 8](https://adventofcode.com/2022/day/8) | ⭐ | ⭐ |
 | [Day 9](https://adventofcode.com/2022/day/9) | ⭐ | ⭐ |
+| [Day 10](https://adventofcode.com/2022/day/10) | ⭐ | ⭐ |
 <!--- advent_readme_stars table --->
 
 ## Some notes along the way...
@@ -108,4 +109,4 @@ yay!
 ### Day 10
 
 "Noop" probably means something practical, like "no operation". But I hear it as a cute little sound, to rhyme with "
-boop". I kind of want a new pet now, so i can name then Noop.
+boop". I kind of want a new pet now, so I can name them "Noop". I had some difficulty at first understanding the puzzle, but once I figured that out the solution went quite smoothly.  
