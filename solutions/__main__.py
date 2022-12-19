@@ -3,7 +3,6 @@
 
 from pydoc import importfile
 
-# from pathlib import Path
 from pyprojroot import here
 
 
@@ -38,8 +37,8 @@ def run_aoc_scripts():
 
                     solver = importfile(solver_path)
                     solver.solution(data_path)
-                except ModuleNotFoundError as err:
-                    print(f"That puzzle hasn't been solved yet: {err}.")
+                except FileNotFoundError:
+                    print(f"That puzzle hasn't been solved yet.")
                 aoc_day = None
 
         except ValueError:

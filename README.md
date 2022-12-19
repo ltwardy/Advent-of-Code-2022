@@ -78,6 +78,8 @@ when I have more contiguous time to work on it.
   but I now know they're out there.
 * As it turns out, there were no recursive functions required; my custom classes took care of the nested tre structure
   automatically.
+  I've left my extravagant use of print statements in place as comments, in case I try re-using this code and want to
+  watch what it does as it's doing it.
 
 ### Day 8
 
@@ -108,5 +110,20 @@ yay!
 
 ### Day 10
 
+I had some difficulty at first understanding the puzzle, but once I figured out what we were actually supposed to be
+doing, the rest went quite smoothly. I'm sure some actual learning happened. Unfortunately, the memory of writing code
+has been swallowed up by happy silly sounds in my brain.
 "Noop" probably means something practical, like "no operation". But I hear it as a cute little sound, to rhyme with "
-boop". I kind of want a new pet now, so I can name them "Noop". I had some difficulty at first understanding the puzzle, but once I figured that out the solution went quite smoothly.  
+goop". I kind of want a new pet now, so I can name them "Noop" and just boop their little snoot.
+
+### Interlude: Wrapper script
+
+Just for fun, I've been working on a script I can run when I want to review the Advent of Code frame story -- this year,
+about elves gathering starfruit. Now I can look at all of my solutions in order, as many as I want, without having to
+return to the command line.
+
+Among other things, I learned that naming my wrapper `__main__.py` means I can call it using the name of the package
+directory it's in. Along the way I've also learned a little about importing modules. I tried using relative import paths
+but had difficulty handling the fact that my solutions can be run as standalone scripts as well as being imported into
+the wrapper script. In the end, I discovered a nice combination that worked: `pyprojroot.here()` to give a stable anchor
+for the whole project, and `pydoc.importfile()` to handle the dynamic import from filename. That is so much easier! 
