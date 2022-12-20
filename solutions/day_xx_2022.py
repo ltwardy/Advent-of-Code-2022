@@ -1,9 +1,7 @@
 # Advent of Code 2022
 # Day XX: Puzzle name
 
-import sys
 
-sys.path.append("../")
 from shared_functions import fetch_string_data
 
 
@@ -39,7 +37,7 @@ if __name__ == "__main__":
     try:
         arg = sys.argv[1]
     except IndexError:
-        raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
+        arg = "testing.txt"
 
     print(f"Data file = '{arg}'.")  # debug
     solution(arg)
