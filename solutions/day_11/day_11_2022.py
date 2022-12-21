@@ -1,9 +1,18 @@
 # Advent of Code 2022
 # Day 11: Monkey in the Middle
 
-from pprint import pprint
 
+from decorators import *
 from shared_functions import fetch_string_data
+
+# toggle printing
+global suppress_printing
+
+debug_option = input("There's a lot of monkey business in this puzzle.  Do you want to see the shenanigans (y/N)? ")
+if debug_option.upper() == "Y":
+    suppress_printing = False
+else:
+    suppress_printing = True
 
 
 def parse(raw_data):
@@ -49,20 +58,75 @@ def parse(raw_data):
         false = int(false[-1])
         monkey["false"] = false
 
+        monkey["activity"] = 0
         monkey_behavior.append(monkey)
-
-    pprint(monkey_behavior)
     return monkey_behavior
 
 
-def solve_part_1(input_data):
-    """Describe the puzzle."""
-    pass
+def perform_operation(old: int, operation: str, increase_num):
+    try:
+        increase_num = int(increase_num)
+        if operation == "+":
+            print(f"  Worry level is increased by {increase_num} to {old + increase_num}")
+            return old + increase_num
+        else:
+            print(f"  Worry level is multiplied by {increase_num} to {old * increase_num}")
+            return int(old) * increase_num
+    except ValueError:
+        print(f"  Worry level is squared to {old ** 2}")
+        return old ** 2
 
 
-def solve_part_2(input_data):
-    """Describe the next puzzle."""
-    pass
+@conditional_decorator(disable_printing, suppress_printing)
+def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> int:
+    """Find the most active monkeys and report a worry score."""
+    for r in range(number_of_rounds):
+        for m, active_monkey in enumerate(monkeys):
+            print(f"Monkey {m}")
+            items_held = active_monkey["items"]
+            active_monkey["activity"] += len(items_held)
+            while items_held:
+                item = items_held.pop(0)
+                print(f" Monkey inspects an item with worry level of {item}.")
+                operation = active_monkey["operation"]
+                new_worry = perform_operation(item, *operation)
+                if worry_only_grows:
+                    relief = new_worry
+                else:
+                    relief = new_worry // 3
+                print(f"   Monkey gets bored; worry level is divided by 3 to {relief}")
+                if _test_result := relief % active_monkey["test"]:
+                    destination = active_monkey["false"]
+                    print(f"    Current worry level {relief} is not divisble by {active_monkey['test']}: ", end='')
+                    print(f"throw to monkey {destination}")
+                    monkeys[destination]["items"].append(relief)
+                else:
+                    destination = active_monkey["true"]
+                    print(f"    Current worry level {relief} is divisble by {active_monkey['test']}: ", end='')
+                    print(f"throw to {destination}")
+                    monkeys[destination]["items"].append(relief)
+            # nothing more to pop
+            print("out of items for this monkey")
+            print()
+            continue
+        print(f"At the end of round {+ 1},")
+        for m, monkey in enumerate(monkeys):
+            print(f"Monkey {m}: {monkey['items']}")
+        print()
+    print("After 20 rounds of shenanigans:")
+    for m, monkey in enumerate(monkeys):
+        print(f"Monkey {m} inspected items {monkey['activity']} times.")
+    activities = [monkey["activity"] for monkey in monkeys]
+    top_2 = sorted(activities)[-2:]
+    shenanigans_score = top_2[0] * top_2[1]
+    return shenanigans_score
+    # yay! correct!
+
+
+@conditional_decorator(disable_printing, True)
+def solve_part_2(monkeys):
+    """Calculate the level of monkey business if your worry never decreases, for 10000 rounds."""
+    solve_part_1(monkeys, number_of_rounds=10000, worry_only_grows=True)
 
 
 def solution(filename):
@@ -71,7 +135,8 @@ def solution(filename):
     raw_data = fetch_string_data(filename)
     notes = parse(raw_data)
 
-    solve_part_1(notes)
+    shenanigans = solve_part_1(notes)
+    print(f"The level of monkey business in this situation is {shenanigans}.")
     solve_part_2(notes)
 
 

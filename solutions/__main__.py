@@ -1,12 +1,8 @@
 """ Advent of Code 2022: wrapper for running my daily solution scripts."""
-# 1 December 2022: This doesn't work yet
 
 from pydoc import importfile
 
 from pyprojroot import here
-
-
-# import sys
 
 
 def run_aoc_scripts():
