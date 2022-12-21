@@ -144,6 +144,7 @@ def solve_part_2(monkeys, number_of_rounds=10000, worry_only_grows=True):
     """Calculate the level of monkey business if your worry never decreases, for 10000 rounds."""
     # first draft: same as part 1 but with very few print statements
     # result: way too slow.
+    # second draft: the Slack channel mentions a modulo trick, but I haven't read anyone's code yet.
 
     for r in range(number_of_rounds):
 
@@ -154,16 +155,12 @@ def solve_part_2(monkeys, number_of_rounds=10000, worry_only_grows=True):
                 item = items_held.pop(0)
                 operation = active_monkey["operation"]
                 new_worry = perform_operation_quietly(item, *operation)
-                if worry_only_grows:
-                    relief = new_worry
-                else:
-                    relief = new_worry // 3
-                if _test_result := relief % active_monkey["test"]:
+                if _test_result := new_worry % active_monkey["test"]:
                     destination = active_monkey["false"]
-                    monkeys[destination]["items"].append(relief)
+                    monkeys[destination]["items"].append(new_worry)
                 else:
                     destination = active_monkey["true"]
-                    monkeys[destination]["items"].append(relief)
+                    monkeys[destination]["items"].append(new_worry)
             # nothing more to pop
             continue
     for m, monkey in enumerate(monkeys):
