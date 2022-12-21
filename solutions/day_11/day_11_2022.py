@@ -2,6 +2,11 @@
 # Day 11: Monkey in the Middle
 
 
+import sys
+from copy import deepcopy
+
+sys.path.append("../")
+
 from decorators import *
 from shared_functions import fetch_string_data
 
@@ -77,9 +82,21 @@ def perform_operation(old: int, operation: str, increase_num):
         return old ** 2
 
 
+def perform_operation_quietly(old: int, operation: str, increase_num):
+    try:
+        increase_num = int(increase_num)
+        if operation == "+":
+            return old + increase_num
+        else:
+            return int(old) * increase_num
+    except ValueError:
+        return old ** 2
+
+
 @conditional_decorator(disable_printing, suppress_printing)
 def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> int:
     """Find the most active monkeys and report a worry score."""
+    monkeys = deepcopy(monkeys)
     for r in range(number_of_rounds):
         for m, active_monkey in enumerate(monkeys):
             print(f"Monkey {m}")
@@ -123,10 +140,38 @@ def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> 
     # yay! correct!
 
 
-@conditional_decorator(disable_printing, True)
-def solve_part_2(monkeys):
+def solve_part_2(monkeys, number_of_rounds=10000, worry_only_grows=True):
     """Calculate the level of monkey business if your worry never decreases, for 10000 rounds."""
-    solve_part_1(monkeys, number_of_rounds=10000, worry_only_grows=True)
+    # first draft: same as part 1 but with very few print statements
+    for r in range(number_of_rounds):
+        if r % 500 == 0:
+            print(r)
+
+        for m, active_monkey in enumerate(monkeys):
+            items_held = active_monkey["items"]
+            active_monkey["activity"] += len(items_held)
+            while items_held:
+                item = items_held.pop(0)
+                operation = active_monkey["operation"]
+                new_worry = perform_operation_quietly(item, *operation)
+                if worry_only_grows:
+                    relief = new_worry
+                else:
+                    relief = new_worry // 3
+                if _test_result := relief % active_monkey["test"]:
+                    destination = active_monkey["false"]
+                    monkeys[destination]["items"].append(relief)
+                else:
+                    destination = active_monkey["true"]
+                    monkeys[destination]["items"].append(relief)
+            # nothing more to pop
+            continue
+    for m, monkey in enumerate(monkeys):
+        print(f"Monkey {m} inspected items {monkey['activity']} times.")
+    activities = [monkey["activity"] for monkey in monkeys]
+    top_2 = sorted(activities)[-2:]
+    shenanigans_score = top_2[0] * top_2[1]
+    return shenanigans_score
 
 
 def solution(filename):
@@ -135,10 +180,12 @@ def solution(filename):
     raw_data = fetch_string_data(filename)
     notes = parse(raw_data)
 
-    shenanigans = solve_part_1(notes)
-    print(f"The level of monkey business in this situation is {shenanigans}.")
-    solve_part_2(notes)
+    hijinks = solve_part_1(notes)
+    print(f"The level of monkey business in this situation is {hijinks}.")
 
+    more_hijinks = solve_part_2(notes)
+    print(
+        f"If I never have relief from worry, after 10000 rounds the level of monkey business would be {more_hijinks}.")
 
 # This can be run as a script from the command line, with data filename as argument.
 
