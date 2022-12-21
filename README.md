@@ -122,6 +122,13 @@ Just for fun, I've been working on a script I can run when I want to review the 
 about elves gathering starfruit. Now I can look at all of my solutions in order, as many as I want, without having to
 return to the command line.
 
+### Day 11
+
+I had fun writing the first half of the solution, and then learning a little more about decorators so I can toggle
+printing of verbose descriptions of monkey business as it happens.
+
+Part 2, I haven't solved yet. There are some very large numbers involved, and I'm not sure how I'll deal with them yet.
+
 Among other things, I learned that naming my wrapper `__main__.py` means I can call it using the name of the package
 directory it's in. Along the way I've also learned a little about importing modules. I tried using relative import paths
 but had difficulty handling the fact that my solutions can be run as standalone scripts as well as being imported into

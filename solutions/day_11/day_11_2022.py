@@ -143,9 +143,9 @@ def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> 
 def solve_part_2(monkeys, number_of_rounds=10000, worry_only_grows=True):
     """Calculate the level of monkey business if your worry never decreases, for 10000 rounds."""
     # first draft: same as part 1 but with very few print statements
+    # result: way too slow.
+
     for r in range(number_of_rounds):
-        if r % 500 == 0:
-            print(r)
 
         for m, active_monkey in enumerate(monkeys):
             items_held = active_monkey["items"]
