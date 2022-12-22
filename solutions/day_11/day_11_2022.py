@@ -2,6 +2,7 @@
 # Day 11: Monkey in the Middle
 
 
+import math
 import sys
 from copy import deepcopy
 
@@ -25,7 +26,7 @@ def parse(raw_data):
     # First, break the input into monkeys
     better_data = []
     monkey = []
-    raw_data.append("")  # to make sure the last monkey makes it into the data
+    raw_data.append("")  # to pass my "if not line" check and make sure the last monkey gets appended
     for line in raw_data:
         if not line:
             better_data.append(monkey)
@@ -44,24 +45,20 @@ def parse(raw_data):
         monkey["items"] = items
 
         operation = data_group[1][11:]
-        operation = operation.split()
-        operation = operation[-2:]
+        operation = operation.split()[-2:]
         if operation[-1].isnumeric():
             operation[-1] = int(operation[-1])
         monkey["operation"] = operation
 
         test = data_group[2][6:]
         test = test.split()
-        test = int(test[-1])
-        monkey["test"] = test
+        monkey["test"] = int(test[-1])
 
         true = data_group[3].split()
-        true = int(true[-1])
-        monkey["true"] = true
+        monkey["true"] = int(true[-1])
 
         false = data_group[4].split()
-        false = int(false[-1])
-        monkey["false"] = false
+        monkey["false"] = int(false[-1])
 
         monkey["activity"] = 0
         monkey_behavior.append(monkey)
@@ -82,21 +79,13 @@ def perform_operation(old: int, operation: str, increase_num):
         return old ** 2
 
 
-def perform_operation_quietly(old: int, operation: str, increase_num):
-    try:
-        increase_num = int(increase_num)
-        if operation == "+":
-            return old + increase_num
-        else:
-            return int(old) * increase_num
-    except ValueError:
-        return old ** 2
-
-
 @conditional_decorator(disable_printing, suppress_printing)
-def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> int:
+def monkey_business(monkeys: list, number_of_rounds=20, relief_happens=True) -> int:
     """Find the most active monkeys and report a worry score."""
     monkeys = deepcopy(monkeys)
+    modulo_trick = math.prod([monkey["test"] for monkey in monkeys])
+    assert type(modulo_trick) is int
+
     for r in range(number_of_rounds):
         for m, active_monkey in enumerate(monkeys):
             print(f"Monkey {m}")
@@ -107,10 +96,10 @@ def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> 
                 print(f" Monkey inspects an item with worry level of {item}.")
                 operation = active_monkey["operation"]
                 new_worry = perform_operation(item, *operation)
-                if worry_only_grows:
-                    relief = new_worry
-                else:
+                if relief_happens:
                     relief = new_worry // 3
+                else:
+                    relief = new_worry % modulo_trick
                 print(f"   Monkey gets bored; worry level is divided by 3 to {relief}")
                 if _test_result := relief % active_monkey["test"]:
                     destination = active_monkey["false"]
@@ -130,45 +119,18 @@ def solve_part_1(monkeys: list, number_of_rounds=20, worry_only_grows=False) -> 
         for m, monkey in enumerate(monkeys):
             print(f"Monkey {m}: {monkey['items']}")
         print()
-    print("After 20 rounds of shenanigans:")
+    print(f"After {number_of_rounds} rounds of shenanigans:")
     for m, monkey in enumerate(monkeys):
         print(f"Monkey {m} inspected items {monkey['activity']} times.")
     activities = [monkey["activity"] for monkey in monkeys]
     top_2 = sorted(activities)[-2:]
-    shenanigans_score = top_2[0] * top_2[1]
+    print(top_2)
+    shenanigans_score = math.prod(top_2)
     return shenanigans_score
-    # yay! correct!
-
-
-def solve_part_2(monkeys, number_of_rounds=10000, worry_only_grows=True):
-    """Calculate the level of monkey business if your worry never decreases, for 10000 rounds."""
-    # first draft: same as part 1 but with very few print statements
-    # result: way too slow.
-    # second draft: the Slack channel mentions a modulo trick, but I haven't read anyone's code yet.
-
-    for r in range(number_of_rounds):
-
-        for m, active_monkey in enumerate(monkeys):
-            items_held = active_monkey["items"]
-            active_monkey["activity"] += len(items_held)
-            while items_held:
-                item = items_held.pop(0)
-                operation = active_monkey["operation"]
-                new_worry = perform_operation_quietly(item, *operation)
-                if _test_result := new_worry % active_monkey["test"]:
-                    destination = active_monkey["false"]
-                    monkeys[destination]["items"].append(new_worry)
-                else:
-                    destination = active_monkey["true"]
-                    monkeys[destination]["items"].append(new_worry)
-            # nothing more to pop
-            continue
-    for m, monkey in enumerate(monkeys):
-        print(f"Monkey {m} inspected items {monkey['activity']} times.")
-    activities = [monkey["activity"] for monkey in monkeys]
-    top_2 = sorted(activities)[-2:]
-    shenanigans_score = top_2[0] * top_2[1]
-    return shenanigans_score
+    # Yay! part 1 is correct!
+    # This can be rewritten slightly to accommodate changes for part 2
+    # (once I've read enough to understand the modulo trick and why it works, because I was not getting it on my own).
+    # Part 2 now works as well -- thanks, internet!
 
 
 def solution(filename):
@@ -177,15 +139,14 @@ def solution(filename):
     raw_data = fetch_string_data(filename)
     notes = parse(raw_data)
 
-    hijinks = solve_part_1(notes)
+    hijinks = monkey_business(notes)
     print(f"The level of monkey business in this situation is {hijinks}.")
 
-    more_hijinks = solve_part_2(notes)
-    print(
-        f"If I never have relief from worry, after 10000 rounds the level of monkey business would be {more_hijinks}.")
+    more_hijinks = monkey_business(notes, number_of_rounds=10_000, relief_happens=False)
+    print(f"If I keep getting more worried, after 10000 rounds the level of monkey business will be {more_hijinks}.")
+
 
 # This can be run as a script from the command line, with data filename as argument.
-
 if __name__ == "__main__":
     import sys
 
@@ -193,7 +154,6 @@ if __name__ == "__main__":
         arg = sys.argv[1]
     except IndexError:
         arg = "testing.txt"
-        # raise SystemExit(f"Usage: {sys.argv[0]} <data file for this puzzle>")
 
     print(f"Data file = '{arg}'.")  # debug
     solution(arg)

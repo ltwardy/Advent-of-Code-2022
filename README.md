@@ -122,15 +122,23 @@ Just for fun, I've been working on a script I can run when I want to review the 
 about elves gathering starfruit. Now I can look at all of my solutions in order, as many as I want, without having to
 return to the command line.
 
+Among other things, I learned that naming my wrapper `__main__.py` means I can call it using the name of the package
+directory it's in. Along the way I've also learned a little about importing modules. I tried using relative import paths
+but had difficulty handling the fact that my solutions can be run as standalone scripts as well as being imported into
+the wrapper script. In the end, I discovered a nice combination that worked: `pyprojroot.here()` to give a stable anchor
+for the whole project, and `pydoc.importfile()` to handle the dynamic import from filename. That is so much easier!
+
 ### Day 11
 
 I had fun writing the first half of the solution, and then learning a little more about decorators so I can toggle
 printing of verbose descriptions of monkey business as it happens.
 
-Part 2, I haven't solved yet. There are some very large numbers involved, and I'm not sure how I'll deal with them yet.
+Part 2 is a different story. Doing the thing 20 times was no problem. Embiggening the thing and then doing it 10_000
+times is not going to work without something clever. After turning it over in my mind for a day and failing to think of
+anything sufficiently clever, I started looking at other people's discussions of the day's puzzle. There were multiple
+references to using "the modulo trick" but that didn't prompt any breakthroughs for me. So then I read the actual code,
+and it _still_ didn't make sense. Eventually I found a very basic walkthrough of what the modulo trick is and why it
+works, and finally I think I get it. No points for inventive or creative coding for me, but I definitely learned
+something about modular arithmetic, so I'll call that good enough. 
 
-Among other things, I learned that naming my wrapper `__main__.py` means I can call it using the name of the package
-directory it's in. Along the way I've also learned a little about importing modules. I tried using relative import paths
-but had difficulty handling the fact that my solutions can be run as standalone scripts as well as being imported into
-the wrapper script. In the end, I discovered a nice combination that worked: `pyprojroot.here()` to give a stable anchor
-for the whole project, and `pydoc.importfile()` to handle the dynamic import from filename. That is so much easier! 
+
